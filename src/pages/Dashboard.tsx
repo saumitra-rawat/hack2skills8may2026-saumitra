@@ -53,7 +53,6 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-  return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-color)' }}>
       {/* Navbar */}
       <nav className="glass" style={{ 
