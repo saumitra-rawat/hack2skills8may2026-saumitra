@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getUserTrips, saveTrip, deleteTrip, SavedTrip } from '../services/FirestoreService';
-import { TripItinerary } from '../services/GeminiService';
+import { getUserTrips, saveTrip, deleteTrip } from '../services/FirestoreService';
+import type { SavedTrip } from '../services/FirestoreService';
+import type { TripItinerary } from '../services/GeminiService';
 import TripGenerator from '../components/TripGenerator/TripGenerator';
 import ItineraryDisplay from '../components/TripGenerator/ItineraryDisplay';
 import { LogOut, Plus, History, Trash2, Map as MapIcon, ChevronLeft } from 'lucide-react';

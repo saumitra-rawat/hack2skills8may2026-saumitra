@@ -9,7 +9,7 @@ import {
   Timestamp 
 } from "firebase/firestore";
 import { db } from "../firebase.config";
-import { TripItinerary } from "./GeminiService";
+import type { TripItinerary } from "./GeminiService";
 
 export interface SavedTrip extends TripItinerary {
   id: string;

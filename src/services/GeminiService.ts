@@ -1,7 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(API_KEY);
+import { model } from "../firebase.config";
 
 export interface TripItinerary {
   destination: string;
@@ -26,8 +23,6 @@ export const generateItinerary = async (
   budget: string,
   interests: string[]
 ): Promise<TripItinerary> => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
   const prompt = `
     Generate a detailed travel itinerary for ${destination} for ${days} days.
     Budget: ${budget}. 
@@ -68,7 +63,7 @@ export const generateItinerary = async (
     const cleanText = text.replace(/```json/g, "").replace(/```/g, "").trim();
     return JSON.parse(cleanText) as TripItinerary;
   } catch (error) {
-    console.error("Gemini generation failed:", error);
+    console.error("Vertex AI generation failed:", error);
     throw error;
   }
 };

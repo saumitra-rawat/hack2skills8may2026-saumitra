@@ -1,5 +1,5 @@
 import React from 'react';
-import { TripItinerary } from '../../services/GeminiService';
+import type { TripItinerary } from '../../services/GeminiService';
 import { Clock, MapPin, CalendarDays } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Map from '../Map/Map';

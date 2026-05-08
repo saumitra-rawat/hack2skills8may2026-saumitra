@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { generateItinerary, TripItinerary } from '../../services/GeminiService';
+import { generateItinerary } from '../../services/GeminiService';
+import type { TripItinerary } from '../../services/GeminiService';
 import { Plane, Calendar, Wallet, Heart, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const TripGenerator: React.FC<{ onTripGenerated: (trip: TripItinerary) => void }> = ({ onTripGenerated }) => {
   const [loading, setLoading] = useState(false);
