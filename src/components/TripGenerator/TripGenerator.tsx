@@ -25,7 +25,7 @@ const TripGenerator: React.FC<{ onTripGenerated: (trip: TripItinerary) => void }
         interestsArray
       );
       onTripGenerated(trip);
-    } catch (error) {
+    } catch {
       alert("Failed to generate itinerary. Ensure your Gemini API Key is correct.");
     } finally {
       setLoading(false);

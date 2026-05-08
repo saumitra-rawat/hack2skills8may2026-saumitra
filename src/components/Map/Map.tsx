@@ -14,8 +14,10 @@ const Map: React.FC<{ trip: TripItinerary }> = ({ trip }) => {
 
     const initMap = async () => {
       try {
-        const { Map } = await (loader as any).importLibrary('maps');
-        const { AdvancedMarkerElement } = await (loader as any).importLibrary('marker');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { Map } = await (loader as any).importLibrary('maps') as google.maps.MapsLibrary;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { AdvancedMarkerElement } = await (loader as any).importLibrary('marker') as google.maps.MarkerLibrary;
         
         if (!mapRef.current) return;
 

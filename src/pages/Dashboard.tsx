@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../contexts/useAuth';
 import { getUserTrips, saveTrip, deleteTrip } from '../services/FirestoreService';
 import type { SavedTrip } from '../services/FirestoreService';
 import type { TripItinerary } from '../services/GeminiService';
@@ -15,21 +15,23 @@ const Dashboard: React.FC = () => {
   const [view, setView] = useState<'home' | 'generate' | 'itinerary'>('home');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) fetchTrips();
-  }, [user]);
-
-  const fetchTrips = async () => {
+  const fetchTrips = useCallback(async () => {
+    if (!user) return;
     setLoading(true);
     try {
-      const data = await getUserTrips(user!.uid);
+      const data = await getUserTrips(user.uid);
       setTrips(data.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis()));
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (user) fetchTrips();
+  }, [user, fetchTrips]);
 
   const handleTripGenerated = async (trip: TripItinerary) => {
     setCurrentTrip(trip);

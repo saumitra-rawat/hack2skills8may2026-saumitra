@@ -1,19 +1,45 @@
-import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState } from 'react';
+import { useAuth } from '../contexts/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { LogIn } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { LogIn, Mail } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Login: React.FC = () => {
-  const { loginWithGoogle } = useAuth();
+  const { loginWithGoogle, loginWithEmail, signupWithEmail } = useAuth();
   const navigate = useNavigate();
+  const [isEmailView, setIsEmailView] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const handleGoogleLogin = async () => {
+    setLoading(true);
     try {
       await loginWithGoogle();
       navigate('/dashboard');
     } catch (error) {
-      alert("Failed to login. Check console for details.");
+      console.error(error);
+      alert("Failed to login with Google.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEmailAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      if (isSignup) {
+        await signupWithEmail(email, password);
+      } else {
+        await loginWithEmail(email, password);
+      }
+      navigate('/dashboard');
+    } catch (error: any) {
+      alert(error.message || "Authentication failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -23,7 +49,8 @@ const Login: React.FC = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
+      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+      padding: '20px'
     }}>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -31,12 +58,12 @@ const Login: React.FC = () => {
         className="card" 
         style={{ 
           width: '100%', 
-          maxWidth: '400px', 
+          maxWidth: '440px', 
           textAlign: 'center',
-          padding: '48px' 
+          padding: '40px' 
         }}
       >
-        <div style={{ marginBottom: '24px' }}>
+        <div style={{ marginBottom: '32px' }}>
           <div style={{ 
             width: '64px', 
             height: '64px', 
@@ -50,27 +77,118 @@ const Login: React.FC = () => {
             <LogIn color="white" size={32} />
           </div>
           <h1 style={{ fontSize: '28px', marginBottom: '8px' }}>Wanderlust AI</h1>
-          <p style={{ color: 'var(--text-secondary)' }}>Plan your next adventure with AI</p>
+          <p style={{ color: 'var(--text-secondary)' }}>Your intelligent travel companion</p>
         </div>
 
-        <button 
-          onClick={handleLogin}
-          className="btn-primary"
-          style={{ 
-            width: '100%', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            gap: '12px',
-            padding: '12px'
-          }}
-        >
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" />
-          Sign in with Google
-        </button>
+        <AnimatePresence mode="wait">
+          {!isEmailView ? (
+            <motion.div
+              key="social"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <button 
+                onClick={handleGoogleLogin}
+                className="btn-primary"
+                disabled={loading}
+                style={{ 
+                  width: '100%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  gap: '12px',
+                  padding: '14px',
+                  marginBottom: '16px'
+                }}
+              >
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" />
+                Continue with Google
+              </button>
+              
+              <button 
+                onClick={() => setIsEmailView(true)}
+                style={{ 
+                  width: '100%', 
+                  background: 'none', 
+                  border: '1px solid var(--border-color)', 
+                  padding: '14px',
+                  borderRadius: 'var(--radius)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  color: 'var(--text-primary)',
+                  fontWeight: 500
+                }}
+              >
+                <Mail size={18} /> Continue with Email
+              </button>
+            </motion.div>
+          ) : (
+            <motion.form
+              key="email"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              onSubmit={handleEmailAuth}
+            >
+              <div style={{ marginBottom: '16px', textAlign: 'left' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px', fontWeight: 500 }}>Email Address</label>
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </div>
+              <div style={{ marginBottom: '24px', textAlign: 'left' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px', fontWeight: 500 }}>Password</label>
+                <input 
+                  type="password" 
+                  required 
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </div>
+              
+              <button 
+                type="submit"
+                className="btn-primary"
+                disabled={loading}
+                style={{ width: '100%', padding: '14px', marginBottom: '16px' }}
+              >
+                {loading ? "Processing..." : (isSignup ? "Create Account" : "Sign In")}
+              </button>
 
-        <p style={{ marginTop: '24px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-          By signing in, you agree to our terms and conditions.
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', fontSize: '14px' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>
+                  {isSignup ? "Already have an account?" : "Don't have an account?"}
+                </span>
+                <button 
+                  type="button"
+                  onClick={() => setIsSignup(!isSignup)}
+                  style={{ background: 'none', color: 'var(--primary)', fontWeight: 600, padding: 0 }}
+                >
+                  {isSignup ? "Sign In" : "Sign Up"}
+                </button>
+              </div>
+
+              <button 
+                type="button"
+                onClick={() => setIsEmailView(false)}
+                style={{ marginTop: '16px', background: 'none', color: 'var(--text-secondary)', fontSize: '14px' }}
+              >
+                Back to social login
+              </button>
+            </motion.form>
+          )}
+        </AnimatePresence>
+
+        <p style={{ marginTop: '32px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+          By continuing, you agree to Wanderlust AI's Terms of Service and Privacy Policy.
         </p>
       </motion.div>
     </div>
