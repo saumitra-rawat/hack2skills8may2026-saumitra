@@ -41,7 +41,8 @@ app.use(compression());
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Support client-side routing by serving index.html for all non-static requests
-app.get('*', (req, res) => {
+// Express 5 requires named wildcards — '*' is invalid, use '/{*any}'
+app.get('/{*any}', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
