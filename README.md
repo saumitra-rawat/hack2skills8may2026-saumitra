@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# 🌍 Wanderlust AI - Intelligent Travel Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Wanderlust AI** is a premium, AI-powered travel itinerary generator designed to turn "where should we go?" into a fully-planned adventure in seconds. Built for the Google Cloud Hackathon, it leverages the latest in Generative AI and Cloud infrastructure to provide a seamless travel planning experience.
 
-Currently, two official plugins are available:
+🚀 **Live Demo**: [https://hack2skills8may2026-saumitra.el.r.appspot.com](https://hack2skills8may2026-saumitra.el.r.appspot.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **🧠 AI Itinerary Engine**: Uses **Gemini 1.5 Flash** (via Vertex AI) to generate personalized, day-by-day travel plans based on destination, duration, budget, and interests.
+- **🗺️ Interactive Map Integration**: Visualize your journey with **Google Maps JS API**, featuring custom markers for every recommended stop.
+- **🔐 Secure Authentication**: One-tap login with **Google Sign-In** via Firebase Auth.
+- **📂 Trip Management**: Save, view, and organize your past itineraries with **Cloud Firestore**.
+- **📱 Premium Responsive Design**: A modern, dark-themed UI built with React and custom CSS for a state-of-the-art user experience.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Technology Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Frontend**: React 18, TypeScript, Vite
+- **AI/ML**: Vertex AI in Firebase (Gemini 1.5 Flash)
+- **Database**: Google Cloud Firestore
+- **Identity**: Firebase Authentication (Identity Platform)
+- **Hosting**: Google App Engine (Standard Environment)
+- **Server**: Express.js (optimized for static asset delivery)
+- **Testing**: Vitest
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Local Development
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/saumitra-rawat/hack2skills8may2026-saumitra.git
+   cd hack2skills8may2026-saumitra
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3. **Set up Environment Variables**:
+   Create a `.env` file in the root and add your keys (see `.env.example`):
+   ```env
+   VITE_FIREBASE_API_KEY=your_key
+   VITE_GOOGLE_MAPS_API_KEY=your_key
+   ...
+   ```
+
+4. **Run the app**:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## ☁️ Deployment
+
+This project is configured for **Google App Engine**. To deploy your own version:
+
+1. **Build the project**:
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy via GCloud SDK**:
+   ```bash
+   gcloud app deploy
+   ```
+
+---
+
+## 📜 Problem Statement Alignment
+
+Wanderlust AI directly addresses the challenge of modernizing travel planning by:
+1. **Efficiency**: Reducing hours of research to 5 seconds of AI generation.
+2. **Integration**: Unifying AI logic, Map visualization, and Cloud storage into a single cohesive unit.
+3. **Scalability**: Utilizing Google App Engine's auto-scaling capabilities to handle global traffic.
+
+---
+
+*Built with ❤️ for the Google Cloud Hackathon 2026.*
