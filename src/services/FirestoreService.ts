@@ -17,6 +17,12 @@ export interface SavedTrip extends TripItinerary {
   createdAt: Timestamp;
 }
 
+/**
+ * Saves a generated trip itinerary to Firestore.
+ * @param userId - The ID of the user who owns the trip.
+ * @param trip - The itinerary data to save.
+ * @returns The ID of the newly created document.
+ */
 export const saveTrip = async (userId: string, trip: TripItinerary) => {
   try {
     const docRef = await addDoc(collection(db, "trips"), {
@@ -31,6 +37,11 @@ export const saveTrip = async (userId: string, trip: TripItinerary) => {
   }
 };
 
+/**
+ * Fetches all trips saved by a specific user.
+ * @param userId - The ID of the user whose trips to fetch.
+ * @returns A promise resolving to an array of saved trips.
+ */
 export const getUserTrips = async (userId: string): Promise<SavedTrip[]> => {
   try {
     const q = query(collection(db, "trips"), where("userId", "==", userId));
@@ -45,6 +56,10 @@ export const getUserTrips = async (userId: string): Promise<SavedTrip[]> => {
   }
 };
 
+/**
+ * Deletes a trip itinerary from Firestore.
+ * @param tripId - The ID of the trip to delete.
+ */
 export const deleteTrip = async (tripId: string) => {
   try {
     await deleteDoc(doc(db, "trips", tripId));

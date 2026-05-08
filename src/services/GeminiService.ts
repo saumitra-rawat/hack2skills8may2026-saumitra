@@ -17,6 +17,14 @@ export interface TripItinerary {
   }[];
 }
 
+/**
+ * Generates a travel itinerary using Vertex AI (Gemini 1.5 Flash).
+ * @param destination - The target city or country.
+ * @param days - Number of days for the trip.
+ * @param budget - The budget level (Economy, Moderate, Luxury).
+ * @param interests - List of user interests (e.g., Art, Food, Adventure).
+ * @returns A promise resolving to a structured TripItinerary object.
+ */
 export const generateItinerary = async (
   destination: string,
   days: number,
