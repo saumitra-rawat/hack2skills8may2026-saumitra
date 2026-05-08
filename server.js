@@ -9,14 +9,17 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Trust the App Engine proxy
+app.set('trust proxy', 1);
+
 // Security: Set secure HTTP headers
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      "script-src": ["'self'", "'unsafe-inline'", "https://maps.googleapis.com"],
+      "script-src": ["'self'", "'unsafe-inline'", "https://maps.googleapis.com", "https://apis.google.com", "https://www.gstatic.com"],
       "img-src": ["'self'", "data:", "https://*.gstatic.com", "https://*.googleapis.com", "https://*.firebaseapp.com", "https://www.gstatic.com"],
-      "connect-src": ["'self'", "https://*.googleapis.com", "https://*.firebaseio.com", "https://*.cloudfunctions.net", "https://identitytoolkit.googleapis.com"]
+      "connect-src": ["'self'", "https://*.googleapis.com", "https://*.firebaseio.com", "https://*.cloudfunctions.net", "https://identitytoolkit.googleapis.com", "https://*.firebaseapp.com"]
     },
   },
 }));
@@ -24,7 +27,7 @@ app.use(helmet({
 // Security: Rate limiting to prevent brute-force
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 1000, // Increased limit for hackathon traffic
   standardHeaders: true,
   legacyHeaders: false,
 });

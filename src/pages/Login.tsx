@@ -44,7 +44,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ 
+    <main style={{ 
       height: '100vh', 
       display: 'flex', 
       alignItems: 'center', 
@@ -62,21 +62,26 @@ const Login: React.FC = () => {
           textAlign: 'center',
           padding: '40px' 
         }}
+        role="region"
+        aria-labelledby="login-title"
       >
         <div style={{ marginBottom: '32px' }}>
-          <div style={{ 
-            width: '64px', 
-            height: '64px', 
-            backgroundColor: 'var(--primary)', 
-            borderRadius: '16px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            margin: '0 auto 16px'
-          }}>
+          <div 
+            style={{ 
+              width: '64px', 
+              height: '64px', 
+              backgroundColor: 'var(--primary)', 
+              borderRadius: '16px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              margin: '0 auto 16px'
+            }}
+            aria-hidden="true"
+          >
             <LogIn color="white" size={32} />
           </div>
-          <h1 style={{ fontSize: '28px', marginBottom: '8px' }}>Wanderlust AI</h1>
+          <h1 id="login-title" style={{ fontSize: '28px', marginBottom: '8px' }}>Wanderlust AI</h1>
           <p style={{ color: 'var(--text-secondary)' }}>Your intelligent travel companion</p>
         </div>
 
@@ -87,11 +92,14 @@ const Login: React.FC = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
+              role="group"
+              aria-label="Social Login Options"
             >
               <button 
                 onClick={handleGoogleLogin}
                 className="btn-primary"
                 disabled={loading}
+                aria-label="Sign in with Google"
                 style={{ 
                   width: '100%', 
                   display: 'flex', 
@@ -102,12 +110,13 @@ const Login: React.FC = () => {
                   marginBottom: '16px'
                 }}
               >
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" />
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" width="18" aria-hidden="true" />
                 Continue with Google
               </button>
               
               <button 
                 onClick={() => setIsEmailView(true)}
+                aria-label="Continue with email and password"
                 style={{ 
                   width: '100%', 
                   background: 'none', 
@@ -122,7 +131,7 @@ const Login: React.FC = () => {
                   fontWeight: 500
                 }}
               >
-                <Mail size={18} /> Continue with Email
+                <Mail size={18} aria-hidden="true" /> Continue with Email
               </button>
             </motion.div>
           ) : (
@@ -132,25 +141,36 @@ const Login: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               onSubmit={handleEmailAuth}
+              aria-label={isSignup ? "Create an account" : "Sign in with email"}
             >
               <div style={{ marginBottom: '16px', textAlign: 'left' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px', fontWeight: 500 }}>Email Address</label>
+                <label htmlFor="email-input" style={{ display: 'block', fontSize: '14px', marginBottom: '8px', fontWeight: 500 }}>
+                  Email Address
+                </label>
                 <input 
+                  id="email-input"
                   type="email" 
                   required 
                   placeholder="name@example.com"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
+                  autoComplete="email"
+                  aria-required="true"
                 />
               </div>
               <div style={{ marginBottom: '24px', textAlign: 'left' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px', fontWeight: 500 }}>Password</label>
+                <label htmlFor="password-input" style={{ display: 'block', fontSize: '14px', marginBottom: '8px', fontWeight: 500 }}>
+                  Password
+                </label>
                 <input 
+                  id="password-input"
                   type="password" 
                   required 
                   placeholder="••••••••"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
+                  autoComplete={isSignup ? "new-password" : "current-password"}
+                  aria-required="true"
                 />
               </div>
               
@@ -159,6 +179,7 @@ const Login: React.FC = () => {
                 className="btn-primary"
                 disabled={loading}
                 style={{ width: '100%', padding: '14px', marginBottom: '16px' }}
+                aria-busy={loading}
               >
                 {loading ? "Processing..." : (isSignup ? "Create Account" : "Sign In")}
               </button>
@@ -171,6 +192,7 @@ const Login: React.FC = () => {
                   type="button"
                   onClick={() => setIsSignup(!isSignup)}
                   style={{ background: 'none', color: 'var(--primary)', fontWeight: 600, padding: 0 }}
+                  aria-label={isSignup ? "Switch to Sign In" : "Switch to Sign Up"}
                 >
                   {isSignup ? "Sign In" : "Sign Up"}
                 </button>
@@ -180,6 +202,7 @@ const Login: React.FC = () => {
                 type="button"
                 onClick={() => setIsEmailView(false)}
                 style={{ marginTop: '16px', background: 'none', color: 'var(--text-secondary)', fontSize: '14px' }}
+                aria-label="Back to social login options"
               >
                 Back to social login
               </button>
@@ -187,11 +210,11 @@ const Login: React.FC = () => {
           )}
         </AnimatePresence>
 
-        <p style={{ marginTop: '32px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-          By continuing, you agree to Wanderlust AI's Terms of Service and Privacy Policy.
-        </p>
+        <footer style={{ marginTop: '32px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+          By continuing, you agree to Wanderlust AI's <a href="#" style={{ color: 'var(--primary)' }}>Terms of Service</a> and <a href="#" style={{ color: 'var(--primary)' }}>Privacy Policy</a>.
+        </footer>
       </motion.div>
-    </div>
+    </main>
   );
 };
 

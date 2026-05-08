@@ -59,14 +59,21 @@ const Map: React.FC<{ trip: TripItinerary }> = ({ trip }) => {
   return (
     <div 
       ref={mapRef} 
+      role="application"
+      aria-label={`Map showing travel activities in ${trip.destination}`}
       style={{ 
         width: '100%', 
         height: '400px', 
         borderRadius: '12px', 
         marginBottom: '24px',
-        border: '1px solid var(--border-color)'
+        border: '1px solid var(--border-color)',
+        overflow: 'hidden'
       }} 
-    />
+    >
+      <div style={{ padding: '20px', textAlign: 'center' }} aria-hidden="true">
+        Loading interactive map...
+      </div>
+    </div>
   );
 };
 
